@@ -13,6 +13,21 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    if (contacts?.length) {
+      // items && items.length
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
+    }
+  }
+
   addContact = ({ name, number }) => {
     if (this.isDublicate(name, number)) {
       alert(`Contact ${name} - is already in contacts`);
